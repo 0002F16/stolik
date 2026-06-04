@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import StolikLogo from '../ui/StolikLogo';
 import Button from '../ui/Button';
 import MobileMenu from './MobileMenu';
@@ -191,9 +192,9 @@ const Navbar = () => {
       >
         <div className="container h-full mx-auto flex items-center justify-between">
           <div className="flex items-center gap-8 lg:gap-10">
-            <a href="/" aria-label="Stolik Home">
+            <Link to="/" aria-label="Stolik Home">
               <StolikLogo size="md" />
-            </a>
+            </Link>
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center gap-6">
@@ -218,25 +219,26 @@ const Navbar = () => {
                 <ResourcesMenu />
               </div>
 
-              <a href="/pricing" className="text-[15px] font-medium text-ink hover:text-brand transition-colors py-5">
+              <Link to="/pricing" className="text-[15px] font-medium text-ink hover:text-brand transition-colors py-5">
                 Pricing
-              </a>
+              </Link>
+
+              <Link to="/demo" className="text-[15px] font-medium text-ink hover:text-brand transition-colors py-5">
+                Live demo
+              </Link>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-4">
-              <a href="/sales" className="text-[15px] font-medium text-ink hover:text-brand transition-colors mr-2">
-                Talk to sales
-              </a>
-              <Button variant="secondary" size="sm">Log In</Button>
-              <Button variant="primary" size="sm">Get started for free</Button>
+              <Button as={Link} to="/login" variant="secondary" size="sm">Log In</Button>
+              <Button as={Link} to="/signup" variant="primary" size="sm">Get started for free</Button>
             </div>
 
             {/* Mobile CTA & Menu Button */}
             <div className="flex md:hidden items-center gap-3">
-              <Button variant="primary" size="sm">Get started</Button>
+              <Button as={Link} to="/signup" variant="primary" size="sm">Get started</Button>
               <button 
                 onClick={() => setMobileMenuOpen(true)}
                 className="p-2 -mr-2 text-ink hover:bg-surface-2 rounded-lg transition-colors"

@@ -845,4 +845,38 @@
   .animate-pulse-brand {
     animation: pulse-brand 2s ease-in-out infinite;
   }
+
+  /* Hide scrollbars on horizontal carousels (trust bar, integrations, stories) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;      /* IE / legacy Edge */
+    scrollbar-width: none;          /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;                  /* Chrome / Safari / Edge */
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   REDUCED MOTION — respect user OS preference
+───────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Reveal-on-scroll elements should be visible immediately, not stuck offscreen */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

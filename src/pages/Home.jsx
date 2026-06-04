@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar/Navbar';
@@ -17,6 +17,25 @@ const Home = () => {
   const [bookingStep, setBookingStep] = useState(1);
   const [guests, setGuests] = useState(2);
   const revealRef = useScrollReveal({ selector: '.reveal', stagger: true, staggerDelay: 80 });
+
+  // Feature-tab indicator: measure the active tab's real position/height so the
+  // bar stays aligned even as the active row's description expands/collapses.
+  const tabRefs = useRef([]);
+  const [tabIndicator, setTabIndicator] = useState({ top: 0, height: 0 });
+
+  useEffect(() => {
+    const el = tabRefs.current[activeTab];
+    if (!el) return;
+    const update = () => setTabIndicator({ top: el.offsetTop, height: el.offsetHeight });
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, [activeTab]);
 
   const featureTabs = [
     {
@@ -225,12 +244,12 @@ const Home = () => {
                   Sign up for free <ArrowRight size={18} />
                 </Button>
                 <Button as={Link} to="/demo" variant="secondary" size="lg">
-                  Get a demo
+                  View live demo
                 </Button>
               </div>
             </div>
 
-            <div className="w-full lg:w-[45%] flex justify-center lg:justify-end reveal relative z-10 perspective-1000">
+            <div className="w-full lg:w-[45%] flex justify-center lg:justify-end reveal relative z-10">
               <div 
                 className="w-full max-w-[420px] bg-white shadow-2xl rounded-2xl border border-border p-6 overflow-hidden"
                 style={{ 
@@ -384,18 +403,19 @@ const Home = () => {
           <div className="flex flex-col md:flex-row gap-12 lg:gap-24 items-start max-w-[1000px] mx-auto">
             {/* Left: Tabs */}
             <div className="w-full md:w-[280px] flex flex-col pl-6 relative">
-              <div 
-                className="absolute left-0 w-[2px] bg-brand transition-all duration-150 ease-out"
-                style={{ 
-                  top: `${activeTab * (100 / featureTabs.length)}%`, 
-                  height: `${100 / featureTabs.length}%` 
-                }} 
+              <div
+                className="absolute left-0 w-[2px] bg-brand transition-all duration-200 ease-out"
+                style={{
+                  top: tabIndicator.top,
+                  height: tabIndicator.height
+                }}
               />
               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-border-dark opacity-30 -z-10" />
 
               {featureTabs.map((tab, idx) => (
                 <button
                   key={idx}
+                  ref={(el) => (tabRefs.current[idx] = el)}
                   onClick={() => setActiveTab(idx)}
                   className="text-left py-4 relative group"
                 >
@@ -557,11 +577,11 @@ const Home = () => {
       {/* ── Section 8: Final CTA ── */}
       <section className="section bg-surface-dark reveal">
         <div className="container mx-auto text-center">
-          <h2 className="text-[40px] font-bold text-white mb-4">Power up your restaurant bookings</h2>
-          <p className="text-[18px] text-[rgba(255,255,255,0.7)] mb-8">Get started in minutes — for free.</p>
+          <h2 className="text-[clamp(1.875rem,5vw,2.5rem)] font-bold text-white mb-4 tracking-tight">Power up your restaurant bookings</h2>
+          <p className="text-[clamp(1rem,2.5vw,1.125rem)] text-[rgba(255,255,255,0.7)] mb-8">Get started in minutes — for free.</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button as={Link} to="/signup" variant="white" size="lg">Start for free</Button>
-            <Button as={Link} to="/demo" variant="ghost-dark" size="lg">Get a demo</Button>
+            <Button as={Link} to="/demo" variant="ghost-dark" size="lg">View live demo</Button>
           </div>
         </div>
       </section>

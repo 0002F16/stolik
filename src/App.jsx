@@ -8,6 +8,8 @@ import Solutions from './pages/Solutions';
 import SolutionRestaurant from './pages/SolutionRestaurant';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Demo from './pages/Demo';
+import NotFound from './pages/NotFound';
 import PageTransition from './components/PageTransition';
 
 function AnimatedRoutes() {
@@ -59,6 +61,10 @@ function AnimatedRoutes() {
           <Route path="/solutions/restaurant" element={<PageTransition><SolutionRestaurant /></PageTransition>} />
           <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
           <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+          {/* Demo app renders its own full-screen chrome with fixed nav — must NOT be
+              wrapped in PageTransition (its transform would break position: fixed). */}
+          <Route path="/demo" element={<Demo />} />
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
       </AnimatePresence>
     </div>

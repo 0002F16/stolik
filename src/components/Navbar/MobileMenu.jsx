@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { X, ChevronDown } from 'lucide-react';
 import StolikLogo from '../ui/StolikLogo';
 import Button from '../ui/Button';
@@ -116,9 +117,18 @@ const MobileMenu = ({ isOpen, onClose }) => {
           className="border-b border-border opacity-0 translate-y-4 animate-[slide-up_0.4s_cubic-bezier(0.16,1,0.3,1)_forwards]"
           style={{ animationDelay: '200ms' }}
         >
-          <a href="/pricing" className="block w-full py-5 text-[18px] font-bold text-ink hover:text-brand">
+          <Link to="/pricing" onClick={onClose} className="block w-full py-5 text-[18px] font-bold text-ink hover:text-brand">
             Pricing
-          </a>
+          </Link>
+        </div>
+
+        <div
+          className="border-b border-border opacity-0 translate-y-4 animate-[slide-up_0.4s_cubic-bezier(0.16,1,0.3,1)_forwards]"
+          style={{ animationDelay: '210ms' }}
+        >
+          <Link to="/demo" onClick={onClose} className="block w-full py-5 text-[18px] font-bold text-ink hover:text-brand">
+            Live demo
+          </Link>
         </div>
       </div>
 
@@ -128,8 +138,8 @@ const MobileMenu = ({ isOpen, onClose }) => {
         style={{ animationDelay: '250ms' }}
       >
         <div className="flex flex-col gap-3">
-          <Button variant="primary" size="lg" className="w-full justify-center">Get started for free</Button>
-          <Button variant="secondary" size="lg" className="w-full justify-center">Log In</Button>
+          <Button as={Link} to="/signup" onClick={onClose} variant="primary" size="lg" className="w-full justify-center">Get started for free</Button>
+          <Button as={Link} to="/login" onClick={onClose} variant="secondary" size="lg" className="w-full justify-center">Log In</Button>
         </div>
       </div>
     </div>
